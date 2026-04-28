@@ -7,7 +7,10 @@ class Serie {
   final double? note;
   final String statut;
 
-  const Serie({
+  bool isFavori;
+  bool isInWatchlist;
+
+  Serie({
     required this.id,
     required this.nom,
     required this.synopsis,
@@ -15,6 +18,8 @@ class Serie {
     this.imageUrl,
     this.note,
     required this.statut,
+    this.isFavori = false,
+    this.isInWatchlist = false,
   });
 
   static String _stripHtml(String? html) {

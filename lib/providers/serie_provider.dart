@@ -14,6 +14,10 @@ class SerieProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
+  List<Serie> get favoris => _series.where((s) => s.isFavori).toList();
+
+  List<Serie> get watchlist => _series.where((s) => s.isInWatchlist).toList();
+
   Future<void> fetchSeries() async {
     _isLoading = true;
     _error = null;
@@ -30,7 +34,29 @@ class SerieProvider with ChangeNotifier {
     }
   }
 
+  void toggleFavori(int id) {
+    final serie = _series.firstWhere((s) => s.id == id);
+    serie.isFavori = !serie.isFavori;
+    notifyListeners();
+  }
+
+  void toggleWatchlist(int id) {
+    final serie = _series.firstWhere((s) => s.id == id);
+    serie.isInWatchlist = !serie.isInWatchlist;
+    notifyListeners();
+  }
+
   Future<Serie> fetchSerieById(int id) async {
-    return _apiService.fetchSerieById(id);
+    // Vérifie si déjà en mémoire
+    try {
+      return _series.firstWhere((s) => s.id == id);
+    } catch (_) {
+      final serie = await _apiService.fetchSerieById(id);
+
+      //  AJOUT IMPORTANT
+      _series.add(serie);
+
+      return serie;
+    }
   }
 }

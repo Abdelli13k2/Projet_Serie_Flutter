@@ -30,7 +30,7 @@ class SerieApiService {
 
   /// Données de secours affichées si le réseau est indisponible.
   List<Serie> getMockSeries() => [
-        const Serie(
+        Serie(
             id: 0,
             nom: 'Mode hors-ligne',
             synopsis: 'Pas de connexion réseau.',
